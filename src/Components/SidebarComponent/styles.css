@@ -1,0 +1,10 @@
+.Sidebar{
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: aqua;
+}
+#SidebarCollapse{
+    right: 0;
+}
