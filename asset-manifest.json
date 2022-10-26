@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/thi_toeic/static/css/main.a305b1e1.chunk.css",
+    "main.js": "/thi_toeic/static/js/main.67882a90.chunk.js",
+    "main.js.map": "/thi_toeic/static/js/main.67882a90.chunk.js.map",
+    "runtime-main.js": "/thi_toeic/static/js/runtime-main.305dc52e.js",
+    "runtime-main.js.map": "/thi_toeic/static/js/runtime-main.305dc52e.js.map",
+    "static/css/2.8441bd9b.chunk.css": "/thi_toeic/static/css/2.8441bd9b.chunk.css",
+    "static/js/2.91269047.chunk.js": "/thi_toeic/static/js/2.91269047.chunk.js",
+    "static/js/2.91269047.chunk.js.map": "/thi_toeic/static/js/2.91269047.chunk.js.map",
+    "index.html": "/thi_toeic/index.html",
+    "static/css/2.8441bd9b.chunk.css.map": "/thi_toeic/static/css/2.8441bd9b.chunk.css.map",
+    "static/css/main.a305b1e1.chunk.css.map": "/thi_toeic/static/css/main.a305b1e1.chunk.css.map",
+    "static/js/2.91269047.chunk.js.LICENSE.txt": "/thi_toeic/static/js/2.91269047.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.305dc52e.js",
+    "static/css/2.8441bd9b.chunk.css",
+    "static/js/2.91269047.chunk.js",
+    "static/css/main.a305b1e1.chunk.css",
+    "static/js/main.67882a90.chunk.js"
+  ]
+}
