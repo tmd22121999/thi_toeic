@@ -8,7 +8,7 @@ import {
   SubMenu,
   SidebarHeader,
   SidebarFooter,
-  SidebarContent
+  SidebarContent,
 } from "react-pro-sidebar";
 import {
   FaTachometerAlt,
@@ -16,12 +16,18 @@ import {
   FaList,
   FaGithub,
   FaRegLaughWink,
-  FaHeart
+  FaHeart,
 } from "react-icons/fa";
 import "react-pro-sidebar/dist/css/styles.css";
 import { useHistory, useLocation } from "react-router-dom";
 
-const Aside = ({ rtl, toggled, handleToggleSidebar,handleCollapseSidebar, collapse}) => {
+const Aside = ({
+  rtl,
+  toggled,
+  handleToggleSidebar,
+  handleCollapseSidebar,
+  collapse,
+}) => {
   const intl = useIntl();
   const history = useHistory();
   const location = useLocation();
@@ -32,7 +38,7 @@ const Aside = ({ rtl, toggled, handleToggleSidebar,handleCollapseSidebar, collap
       rtl={rtl}
       toggled={toggled}
       breakPoint="md"
-      collapsed = {!toggled?collapse:!toggled}
+      collapsed={!toggled ? collapse : !toggled}
       onToggle={handleToggleSidebar}
     >
       <SidebarHeader>
@@ -48,7 +54,11 @@ const Aside = ({ rtl, toggled, handleToggleSidebar,handleCollapseSidebar, collap
               />
             </div>
           </div> */}
-          {toggled||<button onClick={()=>handleCollapseSidebar(!collapse)}>{collapse?"Mở rộng":"Thu nhỏ"}</button>}
+          {toggled || (
+            <button onClick={() => handleCollapseSidebar(!collapse)}>
+              {collapse ? "Mở rộng" : "Thu nhỏ"}
+            </button>
+          )}
         </div>
       </SidebarHeader>
 
@@ -68,16 +78,14 @@ const Aside = ({ rtl, toggled, handleToggleSidebar,handleCollapseSidebar, collap
             </NavLink>
           </MenuItem>
           <MenuItem icon={<FaGem />}>
-            
             <NavLink exact to={"/Information"}>
-            Thông tin về bài thi Toeic
+              Thông tin về bài thi Toeic
               {/* {intl.formatMessage({ id: "dashboard" })} */}
             </NavLink>
             {/* {" "}
             {intl.formatMessage({ id: "components" })} */}
           </MenuItem>
           <MenuItem icon={<FaGem />}>
-            
             <NavLink exact to={"/Summary"}>
               Ôn tập kiến thức
               {/* {intl.formatMessage({ id: "dashboard" })} */}
@@ -86,7 +94,6 @@ const Aside = ({ rtl, toggled, handleToggleSidebar,handleCollapseSidebar, collap
             {intl.formatMessage({ id: "components" })} */}
           </MenuItem>
           <MenuItem icon={<FaGem />}>
-            
             <NavLink exact to={"/Exam"}>
               Thi thử Toeic
               {/* {intl.formatMessage({ id: "dashboard" })} */}

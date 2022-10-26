@@ -1,0 +1,13 @@
+.summary-bar-container {
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 15px;
+  max-height: 40px;
+  overflow: hidden;
+}
+.summary-bar {
+  display: inline-block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: white;
+}
