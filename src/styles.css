@@ -68,6 +68,8 @@ body {
 .app main {
   width: 100%;
   display: block;
+  padding-bottom: 150px;
+  background-color: #e6e6ff;
 }
 
 .app main header {
@@ -175,10 +177,10 @@ body {
     position: fixed;
     left: -280px;
   }
-  .main{
+  .main {
     margin-left: 0;
   }
-  .app{
+  .app {
     grid-template-columns: auto;
   }
   .pro-sidebar.md.rtl {

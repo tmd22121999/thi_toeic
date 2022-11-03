@@ -1,3 +1,13 @@
+.quiz {
+  margin-top: 4em;
+}
 .list-question {
-  margin-left: 2em;
+  margin-left: 8%;
+}
+.submit-button {
+  position: absolute;
+  right: 250px;
+}
+.paragraph {
+  width: 50em;
 }

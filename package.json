@@ -2,6 +2,7 @@
   "name": "react",
   "version": "1.0.0",
   "description": "React example starter project",
+  "homepage": "https://tmd22121999.github.io/thi_toeic",
   "keywords": [
     "react",
     "starter"
@@ -11,6 +12,7 @@
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
     "bootstrap": "5.1.0",
+    "gh-pages": "^4.0.0",
     "react": "17.0.2",
     "react-bootstrap": "1.6.1",
     "react-dom": "17.0.2",
@@ -19,7 +21,9 @@
     "react-pro-sidebar": "0.6.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.0",
-    "react-switch": "6.0.0"
+    "react-soundplayer": "^1.0.5",
+    "react-switch": "6.0.0",
+    "react-timer-hook": "^3.0.5"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",

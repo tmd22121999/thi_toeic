@@ -1,0 +1,5 @@
+a.button-text,
+.button-text:visited {
+  color: white;
+  text-decoration: none;
+}

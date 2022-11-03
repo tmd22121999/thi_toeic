@@ -29,6 +29,9 @@ const Routes = () => {
         <Route exact path={"/Exam"}>
           <ExamView />
         </Route>
+        <Route exact path={"/*"}>
+          <HomeView />
+        </Route>
       </Switch>
     </>
   );

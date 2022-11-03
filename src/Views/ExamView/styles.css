@@ -1,0 +1,10 @@
+.topic.Inactive {
+  display: none;
+}
+.topic.Active {
+  display: block;
+}
+.time-text {
+  font-weight: 800;
+  font-size: larger;
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import messages from "./messages";
 import Routes from "./Routes";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter  as Router } from "react-router-dom";
 
 function App() {
   const [locale, setLocale] = useState("en");

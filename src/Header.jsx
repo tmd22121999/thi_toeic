@@ -11,14 +11,14 @@ import Menu from "@material-ui/core/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
 const Header = (props) => {
@@ -36,7 +36,7 @@ const Header = (props) => {
   return (
     <header>
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar style={{ background: "#7b1e5c" }} position="static">
           <Toolbar>
             <div
               className={`btn-toggle ${classes.menuButton}`}
@@ -45,7 +45,7 @@ const Header = (props) => {
               <FaBars />
             </div>
             <Typography variant="h4" className={classes.title}>
-              {props.title||'Thi thử Toeic'}
+              {props.title || "Thi thử Toeic"}
             </Typography>
 
             <div>
