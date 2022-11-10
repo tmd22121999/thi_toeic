@@ -3,30 +3,43 @@ import { useState } from "react";
 import Layout from "../../Layout";
 import "./styles.css";
 import QuizComponent from "../../Components/QuizComponent";
-import { Button, Card, Container, Row, Col, Pagination } from "react-bootstrap";
+import { Button, Card, Container, Row, Col, Collapse } from "react-bootstrap";
 // import { Grid, Card, Text } from "@nextui-org/react";
 import { useTimer } from "react-timer-hook";
 import data from "../../test/dataTest.json";
 import { useRef } from "react";
-import ResultView from "../ResultView";
 
-function ExamView() {
-  let expiryTimestamp = new Date().setHours(new Date().getHours() + 2);
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    resume,
-    restart,
-  } = useTimer({
-    autoStart: false,
-    expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
-  });
+function ResultView({ userData }) {
+  const [open, setOpen] = useState(false);
+  const CollapseComponent = ({ data }) => {
+    let _variant = "primary";
+    const userAnswer = userData.filter((item) => item.id == data.id);
+    if (!userAnswer.length > 0) {
+      _variant = "secondary";
+    } else {
+      if (userAnswer[0].value == data.correctAnswer) _variant = "success";
+      else _variant = "danger";
+    }
+    // console.log(userAnswer.value + "-" + data.correctAnswer);
+    return (
+      <>
+        <Button
+          variant={_variant}
+          onClick={() => setOpen(!open)}
+          aria-controls={data.id}
+          aria-expanded={open}
+        >
+          click
+        </Button>
+        <Collapse in={open}>
+          <div id={data.id}>
+            <p dangerouslySetInnerHTML={{ __html: data.hint }}></p>
+          </div>
+        </Collapse>
+      </>
+    );
+  };
+
   const test = `refer to the following e-mail.
         <br />
         <br />
@@ -61,8 +74,6 @@ function ExamView() {
         <br />
         Joseph Craig Production Manager, TJR Printing
       </p>`;
-  const [activeTopic, setActiveTopic] = React.useState(0);
-  const [isEnd, setIsEnd] = React.useState(false);
   const dataProcess = (data) => {
     const data1 = data.filter(
       (item) => item.parentId == "62b69492bbc57b27fe10f7ac"
@@ -106,8 +117,10 @@ function ExamView() {
       };
       return itemReturn;
     });
-    return data2;
+    return data2.flatMap((item) => item.questionList);
   };
+  const [DataQuestion1, setDataQuestion1] = useState(dataProcess(data));
+  //   console.log(DataQuestion1);
   // console.log(dataProcess(data).flatMap((item) => item.questionList));
   const DataQuestion = [
     {
@@ -222,142 +235,31 @@ function ExamView() {
       ],
     },
   ];
-  const [isStart, setIsStart] = React.useState(false);
-  const HandleStart = () => {
-    start();
-    setIsStart(!isStart);
-  };
-
-  const saveAnswer = useRef([]);
-
-  const HandleNextQuestion = (answerData) => {
-    saveAnswer.current = [...saveAnswer.current, ...answerData];
-    if (activeTopic + 1 === data.length) {
-      setIsEnd(true);
-      setIsStart(false);
-      console.log(saveAnswer.current);
-      return;
-    }
-    setActiveTopic(activeTopic + 1);
-  };
-  const TestInforCard = () => {
-    return (
-      <Row>
-        <Col></Col>
-
-        <Col>
-          <Card
-            className="text-center"
-            style={{
-              width: "20rem",
-              padding: "2rem",
-              backgroundColor: "#ebd081",
-            }}
-          >
-            <Card.Img
-              variant="top"
-              src="https://vietmybinhduong.edu.vn/wp-content/uploads/2022/08/t1.jpg"
-            />
-            <Card.Body>
-              <Card.Title>Bài thi thử Toeic :</Card.Title>
-              <Card.Text>
-                Số lượng câu hỏi : 100 câu <br />
-                Thời gian làm bài thi : 120 phút <br />
-              </Card.Text>
-              <Button
-                style={
-                  isStart ? { display: "none" } : { display: "inline-block" }
-                }
-                className="button"
-                variant="primary"
-                onClick={HandleStart}
-              >
-                Bắt đầu thi thử
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col></Col>
-      </Row>
-    );
-  };
 
   return (
-    <Layout>
-      <div className="Home">
-        <Container className="Container">
-          {/* <h1 className="HeadingText">{"Test"}</h1> */}
-          {isStart ? (
-            <>
-              <Row>
-                <Col></Col>
-                <Col></Col>
-                <Col>
-                  <p className="time-text float-right">
-                    {hours}:{minutes}:{seconds}
-                  </p>
-                </Col>
-              </Row>
-              <Row>
-                {dataProcess(data).map((item, index) => {
-                  return (
-                    <div
-                      key={item.id}
-                      className={`topic ${
-                        activeTopic === index ? "Active" : "Inactive"
-                      }`}
-                    >
-                      <QuizComponent
-                        DataQuestion={item}
-                        HandleNextQuestion={HandleNextQuestion}
-                      />
-                    </div>
-                  );
-                })}
-              </Row>
-              <Row style={{ marginTop: 100 }}>
-                <Col></Col>
-                <Col md={"auto"}>
-                  <Pagination style={{ maxWidth: "450" }}>
-                    <Pagination.First onClick={() => setActiveTopic(0)} />
-                    <Pagination.Prev />
-                    {activeTopic > 3 ? <Pagination.Ellipsis /> : null}
-                    {activeTopic > 2 ? (
-                      <Pagination.Item>{activeTopic - 2}</Pagination.Item>
-                    ) : null}
-                    {activeTopic > 1 ? (
-                      <Pagination.Item>{activeTopic - 1}</Pagination.Item>
-                    ) : null}
-                    <Pagination.Item active>{activeTopic}</Pagination.Item>
-                    {activeTopic < dataProcess(data).length - 1 ? (
-                      <Pagination.Item>{activeTopic + 1}</Pagination.Item>
-                    ) : null}
-                    {activeTopic < dataProcess(data).length - 2 ? (
-                      <Pagination.Item>{activeTopic + 2}</Pagination.Item>
-                    ) : null}
-                    {activeTopic < dataProcess(data).length - 3 ? (
-                      <Pagination.Ellipsis />
-                    ) : null}
-                    <Pagination.Next />
-                    <Pagination.Last
-                      onClick={() =>
-                        setActiveTopic(dataProcess(data).length - 1)
-                      }
-                    />
-                  </Pagination>
-                </Col>
-                <Col></Col>
-              </Row>
-            </>
-          ) : isEnd ? (
-            <ResultView userData={saveAnswer.current} />
-          ) : (
-            <TestInforCard />
-          )}
-        </Container>
-      </div>
-    </Layout>
+    // <Layout>
+    //   <div className="Home">
+    <Container className="Container">
+      {/* <h1 className="HeadingText">{"Test"}</h1> */}
+
+      <Row>
+        {DataQuestion1.map((item, index) => {
+          return (
+            <div key={item.id} className={`topic`}>
+              <CollapseComponent data={item} />
+            </div>
+          );
+        })}
+      </Row>
+      <Row style={{ marginTop: 100 }}>
+        <Col></Col>
+        <Col md={"auto"}></Col>
+        <Col></Col>
+      </Row>
+    </Container>
+    //   </div>
+    // </Layout>
   );
 }
 
-export default ExamView;
+export default ResultView;

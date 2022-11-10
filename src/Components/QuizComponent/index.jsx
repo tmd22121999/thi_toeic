@@ -2,9 +2,12 @@ import "./styles.css";
 import React from "react";
 import { Image, Form, Container, Row, Col, Button } from "react-bootstrap";
 import { useRef } from "react";
+import { useState } from "react";
 
 function QuizComponent({ HandleNextQuestion, DataQuestion }) {
   const audioRef = useRef(null);
+  const formRef = useRef(null);
+  const [answerData, setAnswerData] = useState([]);
   const Answer = ({ questionID, answer, answerID }) => {
     return (
       <Form.Check
@@ -44,9 +47,16 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
   };
 
   const handleSubmit = () => {
+    // console.log(answerData);
     event.preventDefault();
     audioRef.current?.pause();
-    HandleNextQuestion();
+    HandleNextQuestion(answerData);
+  };
+  const handleChange = (event) => {
+    setAnswerData([
+      ...answerData,
+      { id: event.target.name, value: event.target.value },
+    ]);
   };
 
   return (
@@ -120,6 +130,7 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
             {DataQuestion.questionList.map((item) => {
               return (
                 <Form.Group
+                  ref={formRef}
                   controlId={`${DataQuestion.id}-${item.id}`}
                   key={`${DataQuestion.id}-${item.id}`}
                   className="mb-3"
@@ -132,8 +143,10 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
                       <Form.Check
                         key={`answer-${item.id}-${index + 1}`}
                         type={"radio"}
-                        name={`group-${item.id}`}
+                        name={`${item.id}`}
+                        value={itemAnswer}
                         id={`answer-${item.id}-${index + 1}`}
+                        onChange={handleChange}
                         label={itemAnswer}
                       />
                       // <Answer

@@ -6,7 +6,7 @@ import Aside from "./Aside";
 function Layout(props) {
   const [rtl, setRtl] = useState(false);
   const [toggled, setToggled] = useState(false);
-  const [collapse,setCollapse]=React.useState(false);
+  const [collapse, setCollapse] = React.useState(false);
   const intl = useIntl();
 
   const handleRtlChange = (checked) => {
