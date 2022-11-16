@@ -58,6 +58,12 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
       { id: event.target.name, value: event.target.value },
     ]);
   };
+  const [controlAudio, setControlAudio] = useState("auto");
+  const onplay = () => {
+    audioRef.current.play();
+    setControlAudio(false);
+    console.log("aaaaaaa");
+  };
 
   return (
     <>
@@ -66,8 +72,14 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
         <Row className="datum">
           {DataQuestion.audio ? (
             <Row className="justify-content-md-center">
+              <Button onClick={onplay}>Play</Button>
               <Col md="auto">
-                <audio ref={audioRef} controls>
+                <audio
+                  // onPlay={onplay}
+                  ref={audioRef}
+                  style={{ pointerEvents: "none" }}
+                  controls
+                >
                   <source src={DataQuestion.audio} type="audio/mpeg" />
                 </audio>
               </Col>
