@@ -5,6 +5,7 @@ import ExamView from "./Views/ExamView";
 import ToeicStructView from "./Views/ToeicStructView";
 import SummaryView from "./Views/SummaryView";
 import Layout from "./Layout.jsx";
+import Admin from "./admin/App";
 import { Switch, Route } from "react-router-dom";
 
 const Routes = () => {
@@ -28,6 +29,9 @@ const Routes = () => {
         </Route>
         <Route exact path={"/Exam"}>
           <ExamView />
+        </Route>
+        <Route exact path={"/Admin"}>
+          <Admin />
         </Route>
         <Route exact path={"/*"}>
           <HomeView />
