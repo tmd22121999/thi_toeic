@@ -7,6 +7,7 @@ import SummaryView from "./Views/SummaryView";
 import Layout from "./Layout.jsx";
 import Admin from "./admin/App";
 import { Switch, Route } from "react-router-dom";
+import LoginView from "./Views/AuthView/LoginView";
 
 const Routes = () => {
   return (
@@ -32,6 +33,9 @@ const Routes = () => {
         </Route>
         <Route exact path={"/Admin"}>
           <Admin />
+        </Route>
+        <Route exact path={"/Login"}>
+          <LoginView />
         </Route>
         <Route exact path={"/*"}>
           <HomeView />

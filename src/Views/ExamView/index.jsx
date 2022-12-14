@@ -9,8 +9,11 @@ import { useTimer } from "react-timer-hook";
 import data from "../../test/dataTest.json";
 import { useRef } from "react";
 import ResultView from "../ResultView";
+import useToken from "../../Helper/useToken";
+import LoginView from "../AuthView/LoginView";
 
 function ExamView() {
+  const { token, setToken } = useToken();
   let expiryTimestamp = new Date().setHours(new Date().getHours() + 2);
   const {
     seconds,
@@ -281,7 +284,13 @@ function ExamView() {
       </Row>
     );
   };
-
+  if (!token) {
+    return (
+      <Layout>
+        <LoginView />
+      </Layout>
+    );
+  }
   return (
     <Layout>
       <div className="Home">
