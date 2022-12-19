@@ -8,6 +8,7 @@ import Layout from "./Layout.jsx";
 import Admin from "./admin/App";
 import { Switch, Route } from "react-router-dom";
 import LoginView from "./Views/AuthView/LoginView";
+import RegisterView from "./Views/AuthView/RegisterView";
 
 const Routes = () => {
   return (
@@ -36,6 +37,9 @@ const Routes = () => {
         </Route>
         <Route exact path={"/Login"}>
           <LoginView />
+        </Route>
+        <Route exact path={"/Register"}>
+          <RegisterView />
         </Route>
         <Route exact path={"/*"}>
           <HomeView />

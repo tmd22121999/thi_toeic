@@ -5,7 +5,7 @@ const dbConfig = require("./app/config/db.config");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:4001"
+  origin: "*"
 };
 
 app.use(cors(corsOptions));
@@ -35,12 +35,14 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to Toeic application." });
 });
 
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/question.routes")(app);
+require("./app/routes/exam.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;

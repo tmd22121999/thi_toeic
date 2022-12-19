@@ -4,7 +4,7 @@ const User = db.user;
 
 checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
-      console.log(req);
+      // console.log(req);
   if(!req.body.username){
     res.status(400).send({ message: "Invalid username" });
     return;

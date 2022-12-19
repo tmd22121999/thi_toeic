@@ -11,6 +11,7 @@ import { useRef } from "react";
 import ResultView from "../ResultView";
 import useToken from "../../Helper/useToken";
 import LoginView from "../AuthView/LoginView";
+import { NavLink } from "react-router-dom";
 
 function ExamView() {
   const { token, setToken } = useToken();
@@ -287,7 +288,27 @@ function ExamView() {
   if (!token) {
     return (
       <Layout>
-        <LoginView />
+        <Row>
+          <Col></Col>
+          <Col>
+            <Row>
+              <h2>Yêu cầu đăng nhập để làm bài thi thử Toeic</h2>
+            </Row>
+            <Row>
+              <Button
+                style={{ display: "inline-block", margin: "auto" }}
+                className="button"
+                variant="primary"
+                // onClick={HandleStart}
+              >
+                <NavLink className={"button-text"} exact to={"/Login"}>
+                  Ấn vào đây để đi đến trang đăng nhập
+                </NavLink>
+              </Button>
+            </Row>
+          </Col>
+          <Col></Col>
+        </Row>
       </Layout>
     );
   }

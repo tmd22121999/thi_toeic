@@ -9,7 +9,7 @@ export default class Index extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/persons')
+        axios.get('http://localhost:4000/api/test/all')
             .then(response => {
                 console.log(response.data);
                 this.setState({persons: response.data});
@@ -33,8 +33,9 @@ export default class Index extends Component {
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Company</th>
-                        <th>Age</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Image</th>
                         <th colSpan="2">Action</th>
                     </tr>
                     </thead>

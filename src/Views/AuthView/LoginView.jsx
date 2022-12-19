@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../dist/css/adminlte.min.css";
 import useToken from "../../Helper/useToken";
 import { API_BASE_URL } from "../../Constraint/api";
+import { NavLink, Redirect } from "react-router-dom";
+import axios from "axios";
 
 function LoginView() {
   const { token, setToken } = useToken();
@@ -14,7 +16,7 @@ function LoginView() {
 
   const loginHandle = async (e) => {
     e.preventDefault();
-    console.log("errMsg");
+    // console.log("errMsg");
     // const USER_REGEX = /^\[A-z\][A-z0-9-_]{3,23}$/;
     // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
     // const v1 = USER_REGEX.test(username);
@@ -24,52 +26,63 @@ function LoginView() {
     //   return;
     // }
 
-    setToken({ token: "aa" });
+    // setToken({ token: "aa" });
     try {
+      console.log(API_BASE_URL + "api/auth/signin");
+      axios.create({
+        baseURL: API_BASE_URL,
+      });
       const response = await axios.post(
         API_BASE_URL + "api/auth/signin",
         JSON.stringify({ username, password }),
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // withCredentials: true,
         }
       );
       console.log(response);
+      setToken({ token: response.data.accessToken });
       //   setSuccess(true);
       //   //clear state and controlled inputs
       //   setUser("");
       //   setPwd("");
       //   setMatchPwd("");
     } catch (err) {
+      console.log(err.response.data.message);
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 409) {
         setErrMsg("Username Taken");
       } else {
-        setErrMsg("Registration Failed");
+        // setErrMsg("Login Failed");
+        setErrMsg(err.response.data.message ?? "Login Failed");
       }
+      console.log(errMsg);
       //   errRef.current.focus();
     }
   };
   return (
-    <div style={{ margin: "auto" }} class="login-box">
+    <div style={{ margin: "auto", marginTop: 100 }} class="login-box">
+      {token && <Redirect to="/Exam" state={{ from: location }} />}
       <div class="login-logo">
         {/* <a href="../../index2.html"> */}
-        <b>Đăng nhập để bắt đầu thi thử Toeic</b>
+        <b>Login</b>
         {/* </a> */}
       </div>
       <div class="card">
         <div class="card-body login-card-body">
-          {/* <p class="login-box-msg">Đăng nhập để bắt đầu thi thử Toeic</p>
-          <p class="login-box-msg">{token}</p>
+          <p class="login-box-msg">Đăng nhập để bắt đầu thi thử Toeic</p>
+          {/* <p class="login-box-msg">{token}</p> 
           <p class="login-box-msg">{errMsg}</p> */}
 
           <form //{action="../../index3.html"}
-          // method="post"
+            method="post"
           >
             <div class="input-group mb-3">
               <input
-                // type="email"
+                type="text"
                 class="form-control"
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="UserName"
@@ -93,6 +106,7 @@ function LoginView() {
                 </div>
               </div>
             </div>
+            {errMsg ?? <p class={"error-text"}>*{errMsg}*</p>}
             <div class="row">
               <div class="col-8">
                 <div class="icheck-primary">
@@ -125,11 +139,17 @@ function LoginView() {
           <p class="mb-1">
             <a href="forgot-password.html">I forgot my password</a>
           </p> */}
-          <p class="mb-0">
+
+          <NavLink className={"button-text"} exact to={"/Register"}>
+            <p class="mb-0">
+              <a class="text-center">Register a new account</a>
+            </p>
+          </NavLink>
+          {/* <p class="mb-0">
             <a href="register.html" class="text-center">
               Register a new membership
             </a>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+var crypto = require('crypto');
+var nodemailer = require('nodemailer');
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -9,6 +11,7 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
+    name:req.body.name,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   });
@@ -54,6 +57,20 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err });
             return;
           }
+          if (err) { return res.status(500).send({ msg: err.message }); }
+
+          // Send the email
+          // var transporter = nodemailer.createTransport({  port: 25, // Postfix uses port 25
+          // host: 'localhost', 
+          // tls: {
+          //   rejectUnauthorized: false
+          // }, });
+          // var mailOptions = { from: 'no-reply@yourwebapplication.com', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + "token.token" + '.\n' };
+          // transporter.sendMail(mailOptions, function (err) {
+          //     if (err) { return res.status(500).send({ msg: err.message }); }
+          //     res.status(200).send('A verification email has been sent to ' + user.email + '.');
+          // });
+
 
           res.send({ message: "User was registered successfully!" });
         });
