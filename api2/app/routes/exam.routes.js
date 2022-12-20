@@ -11,6 +11,7 @@ module.exports = function(app) {
   });
 
   app.get("/api/exam/all", controller.getAllExam);
+  app.get("/api/exam/:ID", controller.getExamById);
 
   app.get("/api/exam/user", [authJwt.verifyToken], controller.userBoard);
 
