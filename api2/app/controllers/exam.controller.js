@@ -3,46 +3,19 @@ const db = require("../models");
 const questionService  = require("../services/question.services");
 const Question = db.question;
 const Exam = db.exam;
+const mongoose = require("mongoose");
 
 
 exports.getAllExam = async (req, res) => {
-    // console.log("err");
-    Exam.find.aggregate(AllExamQuery).exec((err, exam) => {
-    // console.log(questionController.getByPID());
-    // console.log(exam);
-    // pID = (exam._id);
-    // var response={};
-    // Question.find({"parentId":pID},function(err, questions){
-    // if(err){
-    //     console.log(err);
-    // }
-    // else {
-    //   res.status(200).json({exam,...{question:questions}});
-    //   return
-    // }
+  console.log([...AllExamQuery,
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.params.ID),
+      }
+    }]);
+  Exam.aggregate(AllExamQuery).exec((err, exam) => {
     res.status(200).json(exam);
   })
-    // res.status(200).json(exam);
-  // })
-    // Exam.find(function(err, exams){
-  //   if(err){
-  //       console.log(err);
-  //       res.status(500).json({messenger:"error"});
-  //       return;
-  //   }
-  //   if(!exams){
-  //     console.log(err);
-  //     res.status(500).json({messenger:"exam không tồn tại"});
-  //     return;
-  // }
-  //   // const rest = exams.map(item =>({"_id":item._id,"Name":item.Name}));
-  //   // console.log(rest);
- 
-  //   // console.log(examJson);
-  //   res.status(200).json(exams);
-    
-// });
-  // res.status(200).send("JSON.stringify(User.find())");
 };
 exports.getExamById = (req, res) => {
     // console.log("err");
@@ -107,6 +80,41 @@ const AllExamQuery = [
           }
         }
       ],
+      as: "question"
+    }
+  }
+]
+
+const ExamUserQuery = [
+  {
+    $lookup: {
+      from: "questions",
+      // collection name in db
+      localField: "_id",
+      foreignField: "parentId",
+      pipeline: [
+        {
+          $lookup: {
+            from: "questions",
+            // collection name in db
+            localField: "_id",
+            foreignField: "parentId",
+            pipeline:[{
+              $addFields:  {
+                choices: { $concatArrays: ["$answer.texts","$answer.choices"] },
+                answer: "$$REMOVE"
+              }
+            },
+            ]
+              ,
+            as: "childCard"
+          }
+        },{
+          $addFields:  {
+            choices: { $concatArrays: ["$answer.texts","$answer.choices"] },
+            answer: "$$REMOVE"
+          }
+        }],
       as: "question"
     }
   }
