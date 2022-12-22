@@ -7,12 +7,12 @@ const mongoose = require("mongoose");
 
 
 exports.getAllExam = async (req, res) => {
-  console.log([...AllExamQuery,
-    {
-      $match: {
-        _id: mongoose.Types.ObjectId(req.params.ID),
-      }
-    }]);
+  // console.log([...AllExamQuery,
+  //   {
+  //     $match: {
+  //       _id: mongoose.Types.ObjectId(req.params.ID),
+  //     }
+  //   }]);
   Exam.aggregate(AllExamQuery).exec((err, exam) => {
     res.status(200).json(exam);
   })
@@ -24,7 +24,7 @@ exports.getExamById = (req, res) => {
     })
       .exec((err, exam) => {
         // console.log(questionController.getByPID());
-        console.log(exam);
+        // console.log(exam);
         pID = (exam._id);
         
         let examJson=[];
@@ -47,6 +47,26 @@ exports.getExamById = (req, res) => {
         // res.status(200).json(exam);
       })
 };
+
+exports.CreateNewExam = (req, res) => {
+  const exam = new Exam();
+  exam.save(function(err,resp) {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    res.status(200).send({ message: "add data success!" ,exam:resp});
+  });
+};
+exports.DeleteExamById = (req, res) => {
+  Exam.deleteOne({ _id: mongoose.Types.ObjectId(req.params.ID) }, function (err) {
+    if (err) return handleError(err);
+    res.status(200).send({ message: "delete data success!" });
+    // deleted at most one tank document
+  });
+};
+
 
 exports.userBoard = (req, res) => {
   res.status(200).send("User Content.");

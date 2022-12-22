@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../dist/css/adminlte.min.css";
 import useToken from "../../Helper/useToken";
 import { API_BASE_URL } from "../../Constraint/api";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
 
 function LoginView() {
@@ -13,6 +13,7 @@ function LoginView() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const history = useHistory();
 
   const loginHandle = async (e) => {
     e.preventDefault();
@@ -44,6 +45,9 @@ function LoginView() {
       );
       console.log(response);
       setToken({ token: response.data.accessToken });
+      if (response.data.accessToken) {
+        history.push(`/`);
+      }
       //   setSuccess(true);
       //   //clear state and controlled inputs
       //   setUser("");
@@ -65,7 +69,7 @@ function LoginView() {
   };
   return (
     <div style={{ margin: "auto", marginTop: 100 }} class="login-box">
-      {token && <Redirect to="/Exam" state={{ from: location }} />}
+      {/* {token && <Redirect to="/Exam" state={{ from: location }} />} */}
       <div class="login-logo">
         {/* <a href="../../index2.html"> */}
         <b>Login</b>

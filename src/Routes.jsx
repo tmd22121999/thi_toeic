@@ -32,9 +32,7 @@ const Routes = () => {
         <Route exact path={"/Exam"}>
           <ExamView />
         </Route>
-        <Route exact path={"/Admin"}>
-          <Admin />
-        </Route>
+        <Route exact path={"/Admin"} component={Admin}></Route>
         <Route exact path={"/Login"}>
           <LoginView />
         </Route>
