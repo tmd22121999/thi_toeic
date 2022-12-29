@@ -1,8 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, useRef, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Modal, Row } from "react-bootstrap";
 import QuizComponent2 from "./quiz.component";
+import TableRow from "./TableRow";
+import { useState } from "react";
+import data from "../../test/dataTest.json";
+
+import JoditEditor from "jodit-react";
 
 // fake data generator
 const getItems = (count) =>
@@ -22,18 +27,6 @@ const reorder = (list, startIndex, endIndex) => {
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -41,72 +34,73 @@ const getListStyle = (isDraggingOver) => ({
   width: "100%",
 });
 
-class TableComponent extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-    let flat_data = [];
-    let exam = props.exam.question;
-    exam.map((item) => {
-      if (item.hasChild == 0) {
-        flat_data.push(item);
-      } else {
-        flat_data.push(item);
-        flat_data.push(...item.childCard);
-      }
-      return item;
-    });
-    console.log(flat_data);
-    this.state = {
-      items: props.exam.question,
-    };
-    this.onDragEnd = this.onDragEnd.bind(this);
-  }
-
-  onDragEnd(result) {
+function TableComponent(props) {
+  // console.log(props);
+  let flat_data = [];
+  // let exam = props.exam.question;
+  //   exam.map((item) => {
+  //     if (item.hasChild == 0) {
+  //       flat_data.push(item);
+  //     } else {
+  //       flat_data.push(item);
+  //       flat_data.push(...item.childCard);
+  //     }
+  //     return item;
+  //   });
+  // console.log(flat_data);
+  const [items, setItems] = useState(props.exam ? props.exam.question : data);
+  console.log(items);
+  const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
       return;
     }
 
-    const items = reorder(
-      this.state.items,
+    const itemsReorder = reorder(
+      items,
       result.source.index,
       result.destination.index
     );
-    console.log(items);
-    this.setState({
-      items,
-    });
-  }
-  setText(id, newText) {
-    console.log(this.state.items.find((obj) => obj._id == id));
-    this.state.items.find((obj) => obj._id == id).question.image = newText;
-  }
+    setItems(itemsReorder);
+  };
+  const setText = (id, newText, type) => {
+    let itemsReorder = items;
+    // console.log(itemsReorder.find((obj) => obj._id == id));
+    itemsReorder.find((obj) => obj._id == id).question[type] = newText;
+    setItems(itemsReorder);
+  };
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
-  render() {
-    const TextInput = ({ setText, placeholder, value }) => {
-      return (
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            onChange={(e) => setText(e.target.value)}
-            placeholder={placeholder}
-            // value={value}
-          ></input>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
+
+  const TextInput = ({ setText, placeholder, value }) => {
+    return (
+      <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          onChange={(e) => setText(e.target.value)}
+          placeholder={value}
+          //   value={value}
+        ></input>
+        <div className="input-group-append">
+          <div className="input-group-text">
+            <span className="fas fa-envelope"></span>
           </div>
         </div>
-      );
-    };
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
+      </div>
+    );
+  };
+
+  const [show, setShow] = useState(false);
+  const [curItem, setCurItem] = useState({});
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <div
@@ -114,58 +108,94 @@ class TableComponent extends Component {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {this.state.items.map((item, index) => (
-                <>
-                  <Draggable
-                    key={item._id}
-                    draggableId={item._id}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
+              {/* <TableRow item={items[0]} index={0} /> */}
+              {items
+                ? items.map((item, index) => (
+                    <>
+                    <TableRow itemProps={item} id={item._id} index={index} />
+                    
+                      {/* <Draggable
+                        key={item._id}
+                        draggableId={item._id}
+                        index={index}
                       >
-                        {item._id}
-                      </div>
-                    )}
-                  </Draggable>
-                  <Container>
-                    <Row>
-                      <Col xs={6}>
-                        <QuizComponent2 DataQuestion={item} />
-                      </Col>
-                      <Col xs={6}>
-                        <TextInput
-                          setText={this.setText}
-                          placeholder={"Link to sound file"}
-                          value={item.question.sound}
-                        />
-                        <TextInput
-                          setText={(textValue) =>
-                            this.setText(item._id, textValue)
-                          }
-                          placeholder={"Link to image file"}
-                          value={item.question.image}
-                        />
-                        <div>content here {index}</div>
-                      </Col>
-                    </Row>
-                  </Container>
-                </>
-              ))}
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            order Index : {index} - id : {item._id}
+                          </div>
+                        )}
+                      </Draggable>
+                      <Container>
+                        <Row>
+                          <TextInput
+                            setText={(textValue) =>
+                              setText(item._id, textValue, "sound")
+                            }
+                            placeholder={"Link to sound file"}
+                            value={item.question.sound}
+                          />
+                          <TextInput
+                            setText={(textValue) =>
+                              setText(item._id, textValue, "image")
+                            }
+                            placeholder={"Link to image file"}
+                            value={item.question.image}
+                          />
+                          <div>content here {index}</div>
+
+                          <button
+                            className="btn btn-danger btn-sm mx-1"
+                            variant="primary"
+                            onClick={() => {
+                              setCurItem(item);
+                              handleShow();
+                            }}
+                          >
+                            Preview
+                          </button>
+                        </Row>
+                      </Container> */}
+                    </>
+                  ))
+                : null}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
-    );
-  }
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <QuizComponent2 DataQuestion={curItem} />
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-sm mx-1" onClick={handleClose}>
+            Cancel
+          </button>
+          {/* <button
+            className="btn btn-danger btn-sm mx-1"
+            variant="primary"
+            onClick={() => {
+              HandleDeleteExam(exam._id);
+              handleClose;
+            }}
+          >
+            Delete
+          </button> */}
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 }
 
 export default TableComponent;

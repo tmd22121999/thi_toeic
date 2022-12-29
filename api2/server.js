@@ -5,7 +5,7 @@ const dbConfig = require("./app/config/db.config");
 const app = express();
 
 var corsOptions = {
-  origin: "*"
+  origin: "*",
 };
 
 app.use(cors(corsOptions));
@@ -43,6 +43,8 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/question.routes")(app);
 require("./app/routes/exam.routes")(app);
+require("./app/routes/history.routes")(app);
+require("./app/routes/test.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;

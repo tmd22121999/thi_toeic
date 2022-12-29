@@ -14,7 +14,7 @@ function ExamPage() {
   //modal insert exam
   const HandleInsertExam = () => {
     // const insertData = async () => {
-    setLoading(true);
+    // setLoading(true);
     axios
       .post(
         "http://localhost:4000/api/exam",
@@ -29,12 +29,12 @@ function ExamPage() {
         if (response.status != 200) {
           return;
         }
-        fetchData();
+        // fetchData();
         // console.log(response);
         history.push(`/edit/${response.data.exam._id}`, {
           exam: response.data.exam,
         });
-
+        console.log(response.data.exam);
         // setLoading(false);
       })
       .catch(function (error) {

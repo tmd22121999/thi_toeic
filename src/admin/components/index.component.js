@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import TableRow from './TableRow';
+import TableRow from './TableRowDelicated';
 
 export default class Index extends Component {
     constructor(props) {

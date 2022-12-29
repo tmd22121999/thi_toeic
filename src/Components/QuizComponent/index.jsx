@@ -55,7 +55,7 @@ function QuizComponent({ HandleNextQuestion, DataQuestion }) {
   const handleChange = (event) => {
     setAnswerData([
       ...answerData,
-      { id: event.target.name, value: event.target.value },
+      { questionId: event.target.name, choice: event.target.value },
     ]);
   };
   const [controlAudio, setControlAudio] = useState("auto");

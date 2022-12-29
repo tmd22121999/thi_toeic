@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useLocation } from "react-router-dom";
 import TableComponent from "../components/table.component";
+import TextInput from "../components/TextInput.component";
 
 // import Button from 'react-bootstrap/Button';
 import axios from "axios";
@@ -10,8 +11,8 @@ function ExamEditPage(props) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   //   const searchParams = useParams();
-  const exam = props.history.location.state.exam;
-  //   console.log(exam);
+  const exam = props.history.location.state?.exam;
+  console.log(exam);
   //   console.log(props.history.location.state.exam);
 
   //   const fetchData = async () => {
@@ -55,12 +56,31 @@ function ExamEditPage(props) {
         <section className="content">
           <div className="card">
             <div className="card-header">
+              <h3 className="card-title">Thông tin về bài thi</h3>
+
+              <div className="card-tools">
+                <button className="btn btn-success btn-sm">
+                  <i className="fas fa-trash"></i>
+                  Update
+                </button>
+              </div>
+            </div>
+            <div style={{ margin: 10 }} className="card-body p-0">
+              <label>Tên Bài thi:</label>
+              <TextInput valueProps={exam?.Name} />
+              <label>Giới thiệu:</label>
+              <TextInput valueProps={exam?.description} />
+              {/* <QuizComponent2 DataQuestion={exam.question[100]} /> */}
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-header">
               <h3 className="card-title">Danh sách câu hỏi của đề thi</h3>
 
               <div className="card-tools">
                 <button className="btn btn-success btn-sm">
                   <i className="fas fa-trash"></i>
-                  Thêm đề thi
+                  Thêm câu hỏi
                 </button>
                 <button
                   type="button"
@@ -82,7 +102,7 @@ function ExamEditPage(props) {
             </div>
             <div className="card-body p-0">
               <TableComponent exam={exam} />
-              <QuizComponent2 DataQuestion={exam.question[100]} />
+              {/* <QuizComponent2 DataQuestion={exam.question[100]} /> */}
             </div>
           </div>
         </section>

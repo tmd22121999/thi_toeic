@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.preview {
+  left:-300;
+  background-Color:'white';
+  position :'absolute'
+}

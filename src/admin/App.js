@@ -11,6 +11,7 @@ import SidebarComponent from './components/sidebar.component';
 import ExamPage from './Pages/Exam.Page';
 import ExamPage2 from './Pages/Exam2.Page';
 import ExamEditPage from './Pages/ExamEdit.Page';
+import Test from './Pages/Test.Page';
 
 const Admin = ({ match })=> {
     console.log(match);
@@ -46,6 +47,7 @@ const Admin = ({ match })=> {
                         <Route  path={`${match.path}/create`} component={ Create } />
                         <Route path={`/edit/:id`} component={ ExamEditPage } />
                         <Route path={`/Exam`} component={ ExamPage } />
+                        <Route path={`/Test`} component={ Test } />
                         <Route path={`${match.path}`} component={ ExamPage2 } />
                     </Switch>
                 </div>

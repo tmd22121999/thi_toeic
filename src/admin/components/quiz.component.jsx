@@ -1,11 +1,33 @@
 // import "./styles.css";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Image, Form, Container, Row, Col, Button } from "react-bootstrap";
-import { useRef } from "react";
-import { useState } from "react";
 
-function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
+function QuizComponent2({
+  HandleNextQuestion,
+  DataQuestion,
+  isChange = false,
+  isEdit = true,
+}) {
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    audioRef?.current?.pause();
+    audioRef?.current?.load();
+  }, [isChange]);
+
+  //   const updateSong = (source) => {
+  //     setSource(source);
+  //     if (audioRef.current) {
+  //       audioRef.current.pause();
+  //       audioRef.current.load();
+  //       audioRef.current.play();
+  //     }
+  //   };
+  //   useEffect(() => {
+  //     console.log("aaaxzzz");
+  //     updateSong(DataQuestion.question.sound);
+  //   }, [DataQuestion]);
+
   const formRef = useRef(null);
   const [answerData, setAnswerData] = useState([]);
 
@@ -30,7 +52,6 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
   };
   const questionList =
     DataQuestion.hasChild == 0 ? [DataQuestion] : DataQuestion.childCard;
-  //   console.log(DataQuestion);
   return (
     <>
       {/* <h1>About</h1> */}
@@ -38,14 +59,16 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
         <Row className="datum">
           {DataQuestion.question.sound ? (
             <Row className="justify-content-md-center">
-              <Button style={{ width: "20%" }} onClick={onplay}>
-                Play
-              </Button>
+              {!isEdit ? (
+                <Button style={{ width: "20%" }} onClick={onplay}>
+                  Play
+                </Button>
+              ) : null}
               <Col md="auto">
                 <audio
                   // onPlay={onplay}
                   ref={audioRef}
-                  style={{ pointerEvents: "none" }}
+                  style={{ pointerEvents: isEdit ? "auto" : "none" }}
                   controls
                 >
                   <source src={DataQuestion.question.sound} type="audio/mpeg" />
@@ -73,14 +96,14 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
             <Col md="auto">
               <p
                 dangerouslySetInnerHTML={{ __html: DataQuestion.question.text }}
-                className="paragraph"
+                // className="paragraph"
               ></p>
             </Col>
           </Row>
         </Row>
         <Row className="list-question">
           <Form onSubmit={handleSubmit}>
-            {questionList.map((item) => {
+            {questionList?.map((item) => {
               return (
                 <Form.Group
                   ref={formRef}
@@ -88,15 +111,25 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
                   key={`${DataQuestion._id}-${item._id}`}
                   className="mb-3"
                 >
-                  <Form.Label className="question-text">
+                  {DataQuestion.hasChild?<Form.Label className="question-text">
                     {item.question.text}
                   </Form.Label>
-                  {[...item.answer.texts, ...item.answer.choices].map(
-                    (itemAnswer, index) => {
+                  :null
+                  }
+                  {[...item.answer.texts, ...item.answer.choices]
+                    .sort((a, b) => (b.slice(0, 3) < a.slice(0, 3) ? 1 : -1))
+                    .map((itemAnswer, index) => {
                       return (
                         <Form.Check
                           key={`answer-${item._id}-${index + 1}`}
                           type={"radio"}
+                          style={
+                            isEdit
+                              ? itemAnswer == item.answer.texts[0]
+                                ? CorrectStyle
+                                : IncorrectStyle
+                              : null
+                          }
                           name={`${item._id}`}
                           value={itemAnswer}
                           id={`answer-${item._id}-${index + 1}`}
@@ -104,8 +137,16 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
                           label={itemAnswer}
                         />
                       );
-                    }
-                  )}
+                    })}
+                  {isEdit
+                    ?              
+                    <p
+                      dangerouslySetInnerHTML={{ __html: item.answer.hint?"<br><strong>Gợi ý : </strong><br>"+item.answer.hint :""}}
+                      // className="paragraph"
+                    >
+                    </p>
+                    :null
+                  }
                 </Form.Group>
               );
             })}
@@ -119,5 +160,17 @@ function QuizComponent2({ HandleNextQuestion, DataQuestion }) {
     </>
   );
 }
+const CorrectStyle = {
+  // border: '1px solid green',
+  // borderRadius:'5px',
+  color: "green",
+  paddingLeft: "30px",
+};
+const IncorrectStyle = {
+  // border: '1px solid red',
+  // borderRadius:'5px',
+  color: "red",
+  paddingLeft: "30px",
+};
 
 export default QuizComponent2;

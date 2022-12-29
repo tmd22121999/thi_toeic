@@ -27,9 +27,12 @@ const HeaderComponent=({match})=>{
             <li className="nav-item">
                 <Link to={`/Exam2`} className="nav-link">Exam</Link>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
                 <Link to={`/Edit/aa`} className="nav-link">Exam2</Link>
-            </li> */}
+            </li>
+            <li className="nav-item">
+                <Link to={`/test`} className="nav-link">test</Link>
+            </li>
         </ul>
 
         <ul className="navbar-nav ml-auto">

@@ -13,11 +13,11 @@ function ResultView({ userData }) {
   const [open, setOpen] = useState(false);
   const CollapseComponent = ({ data }) => {
     let _variant = "primary";
-    const userAnswer = userData.filter((item) => item.id == data.id);
+    const userAnswer = userData.filter((item) => item.questionId == data.id);
     if (!userAnswer.length > 0) {
       _variant = "secondary";
     } else {
-      if (userAnswer[0].value == data.correctAnswer) _variant = "success";
+      if (userAnswer[0].choice == data.correctAnswer) _variant = "success";
       else _variant = "danger";
     }
     // console.log(userAnswer.value + "-" + data.correctAnswer);

@@ -17,7 +17,7 @@ const Question = mongoose.model(
     answer: {
       type: Object,
       properties: {
-        text:[{
+        texts:[{
           type: String
         }],
         choices:[{
