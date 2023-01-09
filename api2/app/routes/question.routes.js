@@ -12,6 +12,10 @@ module.exports = function(app) {
 
   app.get("/api/question/all", controller.getAllQuestion);
 
+  app.post("/api/question", controller.CreateNewQuestion);
+  app.post("/api/question/:Id", controller.UpdateQuestion);
+  app.delete("/api/question/:ID", controller.DeleteQuestionById);
+
   app.get("/api/question/user", [authJwt.verifyToken], controller.userBoard);
   app.get("/api/question/pid/:parentID", controller.getByPID);
 

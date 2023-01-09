@@ -12,6 +12,7 @@ module.exports = function(app) {
 
   app.get("/api/exam/all", controller.getAllExam);
   app.post("/api/exam", controller.CreateNewExam);
+  app.post("/api/exam/:Id", controller.EditExam);
   app.delete("/api/exam/:ID", controller.DeleteExamById);
 
   app.get("/api/exam/:ID", controller.getExamById);

@@ -46,7 +46,7 @@ function LoginView() {
       console.log(response);
       setToken({ token: response.data.accessToken });
       if (response.data.accessToken) {
-        history.push(`/`);
+        history.push(`/Exam`);
       }
       //   setSuccess(true);
       //   //clear state and controlled inputs

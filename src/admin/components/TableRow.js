@@ -9,6 +9,7 @@ import JoditEditor from "jodit-react";
 import { useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import { Checkbox } from "@material-ui/core";
+import Axios from "axios";
 
 
 function TableRow({ itemProps, id, index }) {
@@ -19,9 +20,11 @@ function TableRow({ itemProps, id, index }) {
     const [isChange, setIsChange] = useState(false);
     const [isChange2, setIsChange2] = useState(false);
     const [show, setShow] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
     // const [hasChild, setHasChild] = useState(false);
     const [curItem, setCurItem] = useState({});
 
+    const [loading, setLoading] = useState(false);
     const [previewContent, setPreviewContent] = useState(itemProps);
     useEffect(() => {
         // setItem(itemProps)
@@ -33,21 +36,48 @@ function TableRow({ itemProps, id, index }) {
         setPreviewContent(item);
         setIsChange(!isChange)
         setShow(false);
+        setShowDelete(false);
     }
     const handleShow = () => setShow(true);
-    
-  const [file, setFile] = useState({image:{},sound:{}});
-  const handleFileChange = (e,type) => {
-    let fileTemp = file
-    fileTemp[type]={
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    console.log(fileTemp);
-    setContent({type:type,input:fileTemp[type].preview})
-    setFile(fileTemp);
-  };
+    const handleShowDelete = () => setShowDelete(true);
 
+    const [file, setFile] = useState({ image: {}, sound: {} });
+    const handleFileChange = (e, type) => {
+        let fileTemp = file
+        if (!e.target.files[0])
+            return
+        fileTemp[type] = {
+            preview: URL.createObjectURL(e.target.files[0]),
+            data: e.target.files[0],
+        };
+        console.log(fileTemp);
+        setContent({ type: type, input: fileTemp[type].preview })
+        setFile(fileTemp);
+    };
+    const handleUpload =  (type) => {
+        console.log(type);
+        console.log(file[type]);
+        let formData = new FormData();    //formdata object
+        if( !file[type].data){
+            console.log('Nothing to upload');
+            return
+        }
+            formData.append('file', file[type].data);  
+    
+            console.log(file);
+            setLoading(true);
+            Axios.post("http://localhost:4000/upload-file-to-google-drive", formData)
+                .then(response => {
+                    const id = response.data.response.data.id;
+                    setContent({type:type,input:"https://drive.google.com/uc?id="+id});
+                    console.log(id);
+                    setLoading(false);
+                })
+                .catch(error => {
+                  setLoading(false);
+                    console.log(error);
+                });
+      };
 
     const editor = useRef(null);
     // const [content, setContent] = useState(item.question.text);
@@ -75,35 +105,35 @@ function TableRow({ itemProps, id, index }) {
         const temp = previewContent;
         temp.type = type
         setPreviewContent(temp);
-        console.log(temp);
-        // setIsChange(!isChange)
+        // console.log(temp);
+        setIsChange(!isChange)
     }
-    const InitialValue ={
-        hasChild:  0,
+    const InitialValue = {
+        hasChild: 0,
         parentId: item._id,
-        question:{
-            text:"",
-            image:  "",
-            sound:"",
+        question: {
+            text: "",
+            image: "",
+            sound: "",
             hint: ""
-          }
+        }
         ,
         answer: {
-            texts:[""],
-            choices:[""],
-            image:  "",
-            sound:"",
+            texts: [""],
+            choices: [""],
+            image: "",
+            sound: "",
             hint: ""
-          }
+        }
         ,
         tags: [],
-        type:  1,
-        orderIndex:  0
-      }
+        type: 1,
+        orderIndex: 0
+    }
     const HandleAddAnswer = () => {
-        const newAnswer=InitialValue;
+        const newAnswer = InitialValue;
         const temp = previewContent;
-        temp.childCard = [...temp.childCard,newAnswer]
+        temp.childCard = [...temp.childCard, newAnswer]
         setPreviewContent(temp);
         console.log(previewContent);
         setIsChange(!isChange)
@@ -154,6 +184,29 @@ function TableRow({ itemProps, id, index }) {
         setPreviewContent(temp);
         setIsChange(!isChange)
     }
+
+    const HandleDeleteQuestion = (id) => {
+        console.log("delete");
+        // setLoading(true);
+        // axios
+        //   .delete(
+        //     "http://localhost:4000/api/question/" + id,
+        //     // JSON.stringify({}),
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //     }
+        //   )
+        //   .then(function (response) {
+        //     console.log(response.data);
+        //     // fetchData();
+        //     setLoading(false);
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
+    };
 
     const config =
     {
@@ -230,6 +283,7 @@ function TableRow({ itemProps, id, index }) {
                     aria-controls={item._id}
                     aria-expanded={open}
                     variant="danger"
+                    onClick={handleShowDelete}
                 // style={{width:500}}
                 >
                     Xoá
@@ -274,7 +328,28 @@ function TableRow({ itemProps, id, index }) {
                                         setContent({ type: 'sound', input: newContent })
                                     }}
                                 />
-                                <input type="file" onChange={(e)=>handleFileChange(e,'sound')}  id="exampleInputFile"/><br />
+                                <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 'sound')} id="exampleInputFile" />
+                                <button
+                                    className="btn btn-primary btn-sm mx-1"
+                                    style={{minWidth:100,minHeight:30}}
+                                    onClick={() => {
+                                        handleUpload('sound');
+                                    }}
+                                >{loading?<div className="mini-spinner"></div>:'Upload Sound'}
+                                    
+                                </button>
+                                <button
+                                    className="btn btn-danger btn-sm mx-1"
+                                    style={{minWidth:100,minHeight:30}}
+                                    onClick={() => {
+                                        setContent({ type: 'image', input: '' })
+                                        setIsChange(!isChange)
+                                        // setFile(null)
+                                    }}
+                                >
+                                    Remove Sound
+                                </button>
+                                <br />
                                 <label>Link Ảnh :</label>
                                 <TextInput
                                     valueProps={previewContent.question.image}
@@ -282,7 +357,28 @@ function TableRow({ itemProps, id, index }) {
                                         setContent({ type: 'image', input: newContent })
                                     }}
                                 />
-                                <input type="file" onChange={(e)=>handleFileChange(e,'image')}  id="exampleInputFile"/><br />
+                                <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'image')} id="exampleInputFile" />
+                                <button
+                                    className="btn btn-primary btn-sm mx-1"
+                                    style={{minWidth:100,minHeight:30}}
+                                    onClick={() => {
+                                        handleUpload('image');
+                                    }}
+                                >{loading?<div className="mini-spinner"></div>:'Upload Image'}
+                                    
+                                </button>
+                                <button
+                                style={{minWidth:100,minHeight:30}}
+                                    className="btn btn-danger btn-sm mx-1"
+                                    onClick={() => {
+                                        setContent({ type: 'image', input: '' })
+                                        setIsChange(!isChange)
+                                        // setFile(null)
+                                    }}
+                                >
+                                    Remove Image
+                                </button>
+                                <br />
                                 <label>Câu hỏi :</label>
                                 <JoditEditor
                                     ref={editor}
@@ -294,19 +390,18 @@ function TableRow({ itemProps, id, index }) {
                                     onChange={newContent => { }}
                                 />
                                 <label>Loại câu hỏi</label>
-                                <select value={previewContent.type} 
-                                onChange={(e)=>{handleChangeType(e.target.value)}}
-                                className="form-control select2" 
+                                <select value={previewContent.type}
+                                    onChange={(e) => { handleChangeType(e.target.value) }}
+                                    className="form-control select2"
                                 >
 
-                                  <option>listen1</option>
-                                  <option>listen2</option>
-                                  <option>listen3</option>
-                                  <option>listen4</option>
-                                  <option>reading1</option>
-                                  <option>reading2</option>
-                                  <option>reading31</option>
-                                  <option>reading32</option>
+                                    <option value={'t1'}>Part 1 : listen 1</option>
+                                    <option value={'t2'}>Part 2 : listen 2</option>
+                                    <option value={'t3'}>Part 3 : listen 3</option>
+                                    <option value={'t4'}>Part 4 : listen 4</option>
+                                    <option value={'t5'}>Part 5 : reading 1</option>
+                                    <option value={'t6'}>Part 6 : reading 2</option>
+                                    <option value={'t7'}>Part 7 : reading 3</option>
                                 </select>
                                 <div style={{ marginTop: 10 }} className="form-check">
                                     <input className="form-check-input" type="checkbox"
@@ -323,7 +418,7 @@ function TableRow({ itemProps, id, index }) {
                                         <sub className="text-danger">Đáp án đúng đặt ở đầu tiên </sub>
                                         <br />
                                         <TextInput
-                                            setTextProps={(newContent) => HandleAnswerChange({type:"answer", input: { text: newContent } })}
+                                            setTextProps={(newContent) => HandleAnswerChange({ type: "answer", input: { text: newContent } })}
                                             valueProps={[...item.answer.texts, ...item.answer.choices].join(";")}
                                         />
                                         <label>Hint:</label>
@@ -333,7 +428,7 @@ function TableRow({ itemProps, id, index }) {
                                             config={config}
                                             style={{ maxHeight: 400 }}
                                             tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => HandleAnswerChange({ type: 'hint', input:{text:newContent}  })} // preferred to use only this option to update the content for performance reasons
+                                            onBlur={newContent => HandleAnswerChange({ type: 'hint', input: { text: newContent } })} // preferred to use only this option to update the content for performance reasons
                                             onChange={newContent => { }}
                                         />
                                     </>
@@ -344,7 +439,7 @@ function TableRow({ itemProps, id, index }) {
                                         <br />
                                         {previewContent.childCard?.map((item, index) => {
                                             return (<>
-                                                <label style={{marginTop:30}}>Câu hỏi {index + 1} :</label>
+                                                <label style={{ marginTop: 30 }}>Câu hỏi {index + 1} :</label>
                                                 <TextInput
                                                     setTextProps={
                                                         (newContent) => HandleAnswerChange({ type: "question", input: { index: index, text: newContent } })
@@ -353,7 +448,7 @@ function TableRow({ itemProps, id, index }) {
                                                 />
                                                 <label>Đáp án:</label>
                                                 <TextInput
-                                                    setTextProps={(newContent) => HandleAnswerChange({type:"answer", input: { index: index, text: newContent } })}
+                                                    setTextProps={(newContent) => HandleAnswerChange({ type: "answer", input: { index: index, text: newContent } })}
                                                     valueProps={[...item.answer.texts, ...item.answer.choices].join(";")}
                                                 />
                                                 <label>Hint:</label>
@@ -387,16 +482,29 @@ function TableRow({ itemProps, id, index }) {
                     <button className="btn btn-danger btn-sm mx-1" onClick={handleClose}>
                         Cancel
                     </button>
-                    {/* <button
-            className="btn btn-danger btn-sm mx-1"
-            variant="primary"
-            onClick={() => {
-              HandleDeleteExam(exam._id);
-              handleClose;
-            }}
-          >
-            Delete
-          </button> */}
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showDelete} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắc chắn xoá bài câu hỏi này không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-sm mx-1" onClick={handleClose}>
+                        Cancel
+                    </button>
+                    <button
+                        className="btn btn-danger btn-sm mx-1"
+                        variant="primary"
+                        onClick={() => {
+                            HandleDeleteQuestion(item._id);
+                            handleClose;
+                        }}
+                    >
+                        Delete
+                    </button>
                 </Modal.Footer>
             </Modal>
         </Row>

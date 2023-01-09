@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import useToken from "./Helper/useToken";
+import { Link, NavLink, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
+  const { token, setToken } = useToken();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -32,6 +35,11 @@ const Header = (props) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const history = useHistory();
+  const handleLogout = () => {
+    setToken('');
+    history.push(`/`);
   };
   return (
     <header>
@@ -68,7 +76,10 @@ const Header = (props) => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <Link exact to={"/Dashboard"}>
+                  <MenuItem onClick={handleClose}>Dashboard</MenuItem>
+                </Link>
+                <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
               </Menu>
             </div>
           </Toolbar>

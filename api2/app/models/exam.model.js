@@ -6,8 +6,14 @@ const Exam = mongoose.model(
     // _id:  mongoose.ObjectId,
     Name:  String,
     description: String,
-    ltype: String,
-    type:  String
+    ltype: {
+      type: String,
+      default:'toeic'
+  },
+    type:  {
+      type: String,
+      default:'fulltest'
+  }
 })
 );
 

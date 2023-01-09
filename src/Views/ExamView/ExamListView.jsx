@@ -124,9 +124,9 @@ function ExamListView() {
                 variant="primary"
                 // onClick={HandleStart}
               >
-                <NavLink className={"button-text"} exact to={"/Login"}>
+                <Link className={"button-text"} exact to={"/Login"}>
                   Ấn vào đây để đi đến trang đăng nhập
-                </NavLink>
+                </Link>
               </Button>
             </Row>
           </Col>
@@ -144,6 +144,11 @@ function ExamListView() {
           })}
         </Container>
       </div>
+      {loading ? (
+        <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>
+      ) :null}
     </Layout>
   );
 }

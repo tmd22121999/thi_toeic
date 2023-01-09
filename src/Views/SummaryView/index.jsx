@@ -216,6 +216,28 @@ function SummaryView() {
                 chính trong câu chứ không đứng một mình giống như động từ. Với
                 chức năng bổ ngữ cho động từ, động từ khiếm khuyết cũng mang
                 những ý nghĩa riêng để thay đổi ý nghĩa của câu
+                <ul style={{ textAlign: "justify" }}>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <b>
+                      &nbsp;CAN và COULD có ý nghĩa là “có thể”, diễn tả một khả
+                      năng (ability).
+                    </b>
+                    <span style={{ fontWeight: 400 }}>&nbsp;</span>
+                    <ul>
+                      <li style={{ fontWeight: 400 }} aria-level="2">
+                        <span style={{ fontWeight: 400 }}>
+                          Can you swim? (Bạn biết bơi không?)
+                        </span>
+                      </li>
+                      <li style={{ fontWeight: 400 }} aria-level="2">
+                        <span style={{ fontWeight: 400 }}>
+                          She could ride a car when she was 16 years old (Cô ấy
+                          có thể đi xe đạp khi cô ấy được 16 tuổi)
+                        </span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </p>
               <Image
                 fluid={true}
@@ -231,9 +253,90 @@ function SummaryView() {
                 cần phải nắm vững để không mất điểm oan trong các phần thi như
                 Viết hay Nói.
               </p>
-              <p>{DummyText}</p>
-              <p>{DummyText}</p>
-              <p>{DummyText}</p>
+              <p style={{ textAlign: "justify" }}>
+                <b>So sánh bằng:&nbsp; </b>
+                <span style={{ fontWeight: 400 }}>
+                  So sánh bằng thể hiện việc so sánh giữa những sự vật hoặc sự
+                  việc ở cấp độ ngang bằng với nhau.&nbsp;
+                </span>
+              </p>
+              <ul style={{ textAlign: "justify" }}>
+                <li style={{ fontWeight: 400 }} aria-level="1">
+                  <b>Cấu trúc so sánh bằng:</b>
+                  <span style={{ fontWeight: 400 }}>
+                    {" "}
+                    TO BE + AS + ADJ + AS
+                  </span>
+                </li>
+                <li style={{ fontWeight: 400 }} aria-level="1">
+                  <b>Ví dụ:</b>
+                  <span style={{ fontWeight: 400 }}>
+                    {" "}
+                    She is as short as her brother
+                  </span>
+                </li>
+              </ul>
+              <p style={{ textAlign: "justify" }}>
+                <b>So sánh nhất: </b>
+                <span style={{ fontWeight: 400 }}>
+                  So sánh nhất là dạng so sánh được sử dụng đối với người và vật
+                  để chỉ đối tượng đó thường có tính chất khác biệt nhất so với
+                  các đối tượng trong cùng một nhóm (ít nhất là 3 đối tượng)
+                </span>
+              </p>
+              <ul style={{ textAlign: "justify" }}>
+                <li aria-level="1">
+                  <b>Cấu trúc so sánh nhất:&nbsp;</b>
+                </li>
+              </ul>
+              <ul style={{ textAlign: "justify" }}>
+                <li>
+                  <ul>
+                    <li style={{ fontWeight: 400 }} aria-level="2">
+                      <span style={{ fontWeight: 400 }}>
+                        To be + the + tính từ ngắn – est&nbsp;
+                      </span>
+                    </li>
+                    <li style={{ fontWeight: 400 }} aria-level="2">
+                      <span style={{ fontWeight: 400 }}>
+                        To be + the + most + tính từ dài
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <p style={{ textAlign: "justify" }}>
+                <b>So sánh hơn: </b>
+                <span style={{ fontWeight: 400 }}>
+                  So sánh hơn có thể được hiểu là cấu trúc so sánh giữa 2 hay
+                  nhiều vật/người với nhau về một hay một vài tiêu chí, trong số
+                  có một vật đạt được tiêu chí được đưa ra phù hợp nhất so với
+                  các vật còn lại
+                </span>
+              </p>
+              <ul style={{ textAlign: "justify" }}>
+                <li style={{ fontWeight: 400 }} aria-level="1">
+                  <b>Cấu trúc so sánh hơn:</b>
+                  <span style={{ fontWeight: 400 }}>&nbsp;</span>
+                  <ul>
+                    <li style={{ fontWeight: 400 }} aria-level="2">
+                      <span style={{ fontWeight: 400 }}>
+                        To be + tính từ ngắn – er + than
+                      </span>
+                    </li>
+                    <li style={{ fontWeight: 400 }} aria-level="2">
+                      <span style={{ fontWeight: 400 }}>
+                        To be + more + tính từ dài + than
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li style={{ fontWeight: 400 }} aria-level="1">
+                  <span style={{ fontWeight: 400 }}>
+                    Ví dụ: She is taller than both of her sisters.
+                  </span>
+                </li>
+              </ul>
               <h2 id="Passive-header">V. Passive Voice - Câu bị động</h2>
               <p>
                 Câu bị động - kiến thức ngữ pháp TOEIC tiếp theo mà bạn không
@@ -299,6 +402,41 @@ function SummaryView() {
                 thường hay xuất hiện rất nhiều trong bài thi TOEIC, đặc biệt là
                 phần thi Listening. Chính vì vậy các bạn hãy ôn tập thật kỹ về
                 kiến thức này để có thể tự tin đạt điểm cao nhé!
+                <ul style={{ textAlign: "justify" }}>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Câu hỏi Yes/ No.</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      Câu hỏi nhằm lấy thông tin (information question)
+                    </span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      Who hoặc What: câu hỏi chủ ngữ
+                    </span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      Whom hoặc What: câu hỏi đối tượng tân ngữ
+                    </span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      When, Where, How và Why: Câu hỏi bổ ngữ nghĩa
+                    </span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      Câu hỏi phức (hay còn gọi là embedded question)
+                    </span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>
+                      Câu hỏi đuôi (tag questions)
+                    </span>
+                  </li>
+                </ul>
               </p>
               <h2 id="Types-header">XII. Types of words - Từ loại Tiếng Anh</h2>
               <p>
@@ -306,6 +444,35 @@ function SummaryView() {
                 luyện ngữ pháp TOEIC đó là phần thi về các từ loại Tiếng Anh.
                 Trong Tiếng Anh có các từ loại chính sau mà bạn cần đặc biệt lưu
                 tâm:
+                <ul style={{ textAlign: "justify" }}>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Noun</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Verb</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Adjective</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Adverb</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Pronoun</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Preposition</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Conjunction</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Determiner</span>
+                  </li>
+                  <li style={{ fontWeight: 400 }} aria-level="1">
+                    <span style={{ fontWeight: 400 }}>Exclamation</span>
+                  </li>
+                </ul>
               </p>
             </main>
           </Col>

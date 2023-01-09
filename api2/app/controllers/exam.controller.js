@@ -49,7 +49,7 @@ exports.getExamById = (req, res) => {
 };
 
 exports.CreateNewExam = (req, res) => {
-  const exam = new Exam();
+  const exam = new Exam({...req.body});
   exam.save(function(err,resp) {
     if (err) {
       res.status(500).send({ message: err });
@@ -59,6 +59,30 @@ exports.CreateNewExam = (req, res) => {
     res.status(200).send({ message: "add data success!" ,exam:resp});
   });
 };
+exports.EditExam = (req, res) => {
+  const exam = new Exam();
+
+  Exam.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.Id)}, 
+  {...req.body}, 
+  {upsert: true}, function(err, resp) {
+  if (err) return res.status(500).send({error: err});
+    return res.status(200).send({ 
+      message: "Edit data success!" ,
+      // question:resp
+  });
+  });
+
+  // exam.save(function(err,resp) {
+  //   if (err) {
+  //     res.status(500).send({ message: err });
+  //     return;
+  //   }
+
+  //   res.status(200).send({ message: "add data success!" ,exam:resp});
+  // });
+};
+
+
 exports.DeleteExamById = (req, res) => {
   Exam.deleteOne({ _id: mongoose.Types.ObjectId(req.params.ID) }, function (err) {
     if (err) return handleError(err);

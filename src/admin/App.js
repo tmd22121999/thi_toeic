@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../dist/css/adminlte.min.css";
 import { BrowserRouter,MemoryRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import './Pages/style.css'
 
 import Create from './components/create.component';
 import Edit from './components/edit.component';

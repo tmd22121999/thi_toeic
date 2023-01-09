@@ -52,7 +52,7 @@ import {
       },
       {
         label: 'Dataset 2',
-        // data: labels.map([0,1,2,4,5,5,7]),
+        data: [7,5,1,2,3,8,2],
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
@@ -63,22 +63,8 @@ function DashboardView() {
     
   return (
     <Layout title="Home">
-      <h1>About</h1>
       <div className="Home">
         <div className="Container">
-          <h3 className="HeadingText">{"Trang tổng quan về trang web "}</h3>
-          {/* <p className="DescriptionText">{"giới thiệu trang web"}</p> */}
-
-          <Button
-            style={{ display: "inline-block" }}
-            className="button"
-            variant="primary"
-            // onClick={HandleStart}
-          >
-            <NavLink className={"button-text"} exact to={"/Exam"}>
-              Làm bài thi Toeic
-            </NavLink>
-          </Button>
           <Line options={options} data={data} />;
         </div>
       </div>

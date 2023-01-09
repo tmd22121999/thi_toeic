@@ -84,8 +84,8 @@ function ExamView(props) {
         }
         setIsEnd(true);
         setIsStart(false);
-        console.log(response.data);
-        // setLoading(false);
+        // console.log(response.data);
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -304,6 +304,11 @@ function ExamView(props) {
           )}
         </Container>
       </div>
+      {loading ? (
+        <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>
+      ) :null}
     </Layout>
   );
 }

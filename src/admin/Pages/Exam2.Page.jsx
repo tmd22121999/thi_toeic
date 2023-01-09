@@ -3,11 +3,21 @@ import Modal from "react-bootstrap/Modal";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 // import Button from 'react-bootstrap/Button';
 import axios from "axios";
+import TextInput from "../components/TextInput.component";
 
 function ExamPage() {
   //fetch data
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
+
+  
+  const handleClose = () => {
+    setPreviewContent(item);
+    setIsChange(!isChange)
+    setShow(false);
+}
+const handleShow = () => setShow(true);
 
   const history = useHistory();
 
@@ -236,7 +246,7 @@ function ExamPage() {
 
               <div className="card-tools">
                 <button
-                  onClick={HandleInsertExam}
+                  onClick={handleShow}
                   className="btn btn-success btn-sm"
                 >
                   <i className="fas fa-trash"></i>
@@ -285,6 +295,43 @@ function ExamPage() {
                 </tbody>
               </table>
             </div>
+            <Modal dialogClassName="modal-xl" show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Thêm bài thi
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                                <label>Tên bài thi :</label>
+                                <TextInput
+                                    valueProps={""}
+                                    setTextProps={(newContent) => {}}
+                                />
+                                <label>Mô tả :</label>
+                                <TextInput
+                                    valueProps={""}
+                                    setTextProps={(newContent) => {}}
+                                />  
+                                {/* <input type="file"  id="exampleInputFile"/><br /> */}
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-danger btn-sm mx-1" onClick={handleClose}>
+                        Huỷ
+                    </button>
+                    <button className="btn btn-success btn-sm mx-1" onClick={HandleInsertExam}>
+                        Thêm
+                    </button>
+                    {/* <button
+            className="btn btn-danger btn-sm mx-1"
+            variant="primary"
+            onClick={() => {
+              HandleDeleteExam(exam._id);
+              handleClose;
+            }}
+          >
+            Delete
+          </button> */}
+                </Modal.Footer>
+            </Modal>
           </div>
         </section>
       </div>

@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { React, useState } from "react";
 
 const TextInput = ({ setTextProps, placeholder, valueProps }) => {
   const [value, setValue] = useState(valueProps);
+  useEffect(()=>{
+    setValue(valueProps)
+  },[valueProps])
   const setTextOnchange = (text) => {
     setValue(text);
   }
