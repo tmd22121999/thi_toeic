@@ -8,29 +8,63 @@ import TextInput from "../components/TextInput.component";
 import axios from "axios";
 import QuizComponent2 from "../components/quiz.component";
 function ExamEditPage(props) {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   //   const searchParams = useParams();
-  const exam = props.history.location.state?.exam;
-  console.log(exam);
+  const exam2 = props.history.location.state?.exam;
+  const [exam, setExam] = useState(exam2);
+  // console.log(exam);
+  const [Name, setName] = useState(exam?.Name);
+  const [description, setDescription] = useState(exam?.description);
   //   console.log(props.history.location.state.exam);
 
-  //   const fetchData = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const { data: response } = await axios.get(
-  //         "http://localhost:4000/api/exam/all"
-  //       );
-  //       setData(response);
-  //     } catch (error) {
-  //       console.error(error.message);
-  //     }
-  //     setLoading(false);
-  //   };
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const { data: response } = await axios.get(
+          "http://localhost:4000/api/exam/"+exam._id
+        );
+        console.log("res",response);
+        setExam(response[0]);
+      } catch (error) {
+        console.error(error.message);
+      }
+      setLoading(false);
+    };
 
   //   useEffect(() => {
   //     fetchData();
   //   }, []);
+const HandleUpdateData=()=>{
+  fetchData()
+}
+
+  const UpdateMetadataExam = () => {
+    // const insertData = async () => {
+    // setLoading(true);
+    axios
+      .post(
+        "http://localhost:4000/api/exam/"+exam._id,
+        JSON.stringify({Name,description}),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.status != 200) {
+          return;
+        }
+        fetchData();
+        // console.log(response);
+        console.log(response.data.exam);
+        // setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // };
+  };
 
   return (
     <div className="wrapper">
@@ -59,17 +93,25 @@ function ExamEditPage(props) {
               <h3 className="card-title">Thông tin về bài thi</h3>
 
               <div className="card-tools">
-                <button className="btn btn-success btn-sm">
+                <button 
+                className="btn btn-success btn-sm"
+                onClick={UpdateMetadataExam}
+                >
                   <i className="fas fa-trash"></i>
-                  Update
+                  Cập nhật mô tả
                 </button>
               </div>
             </div>
             <div style={{ margin: 10 }} className="card-body p-0">
               <label>Tên Bài thi:</label>
-              <TextInput valueProps={exam?.Name} />
+              <TextInput 
+              valueProps={exam?.Name} 
+              setTextProps={setName}
+              />
               <label>Giới thiệu:</label>
-              <TextInput valueProps={exam?.description} />
+              <TextInput 
+              valueProps={exam?.description} 
+              setTextProps={setDescription}/>
               {/* <QuizComponent2 DataQuestion={exam.question[100]} /> */}
             </div>
           </div>
@@ -78,7 +120,10 @@ function ExamEditPage(props) {
               <h3 className="card-title">Danh sách câu hỏi của đề thi</h3>
 
               <div className="card-tools">
-                <button className="btn btn-success btn-sm">
+                <button 
+                className="btn btn-success btn-sm"
+                // onClick={AddQuestion}
+                >
                   <i className="fas fa-trash"></i>
                   Thêm câu hỏi
                 </button>
@@ -101,7 +146,7 @@ function ExamEditPage(props) {
               </div>
             </div>
             <div className="card-body p-0">
-              <TableComponent exam={exam} />
+              <TableComponent exam={exam} HandleUpdateData={HandleUpdateData} />
               {/* <QuizComponent2 DataQuestion={exam.question[100]} /> */}
             </div>
           </div>

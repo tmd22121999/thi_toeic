@@ -10,11 +10,13 @@ function ExamPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
+  const [Name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   
   const handleClose = () => {
-    setPreviewContent(item);
-    setIsChange(!isChange)
+    // setPreviewContent(item);
+    // setIsChange(!isChange)
     setShow(false);
 }
 const handleShow = () => setShow(true);
@@ -28,7 +30,7 @@ const handleShow = () => setShow(true);
     axios
       .post(
         "http://localhost:4000/api/exam",
-        // JSON.stringify({}),
+        JSON.stringify({Name,description}),
         {
           headers: {
             "Content-Type": "application/json",
@@ -66,7 +68,7 @@ const handleShow = () => setShow(true);
     axios
       .delete(
         "http://localhost:4000/api/exam/" + id,
-        // JSON.stringify({}),
+        // {Name:Name,description:description},
         {
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +79,7 @@ const handleShow = () => setShow(true);
         console.log(response.data);
         fetchData();
 
-        setLoading(false);
+        // setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -92,10 +94,11 @@ const handleShow = () => setShow(true);
         "http://localhost:4000/api/exam/all"
       );
       setData(response);
+      setLoading(false);
     } catch (error) {
       console.error(error.message);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   useEffect(() => {
@@ -304,12 +307,12 @@ const handleShow = () => setShow(true);
                                 <label>Tên bài thi :</label>
                                 <TextInput
                                     valueProps={""}
-                                    setTextProps={(newContent) => {}}
+                                    setTextProps={(newContent) => {setName(newContent)}}
                                 />
                                 <label>Mô tả :</label>
                                 <TextInput
                                     valueProps={""}
-                                    setTextProps={(newContent) => {}}
+                                    setTextProps={(newContent) => {setDescription(newContent)}}
                                 />  
                                 {/* <input type="file"  id="exampleInputFile"/><br /> */}
                 </Modal.Body>
@@ -348,6 +351,11 @@ const handleShow = () => setShow(true);
       </footer>
 
       <aside className="control-sidebar control-sidebar-dark"></aside>
+    {loading ? (
+        <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>
+      ) :null}
     </div>
   );
 }

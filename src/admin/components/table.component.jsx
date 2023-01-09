@@ -6,6 +6,7 @@ import QuizComponent2 from "./quiz.component";
 import TableRow from "./TableRow";
 import { useState } from "react";
 import data from "../../test/dataTest.json";
+import axios from "axios";
 
 import JoditEditor from "jodit-react";
 
@@ -35,6 +36,29 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function TableComponent(props) {
+
+  const [loading, setLoading] = useState(false);
+  const [exam, setExam] = useState(props.exam);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const { data: response } = await axios.get(
+        "http://localhost:4000/api/exam/"+exam._id
+      );
+      console.log("res",response);
+      setExam(response[0]);
+    } catch (error) {
+      console.error(error.message);
+    }
+    setLoading(false);
+  };
+  const HandleUpdateData=()=>{
+    console.log('aaacnsadkas');
+    fetchData();
+  }
+
+
   // console.log(props);
   let flat_data = [];
   // let exam = props.exam.question;
@@ -48,8 +72,8 @@ function TableComponent(props) {
   //     return item;
   //   });
   // console.log(flat_data);
-  const [items, setItems] = useState(props.exam ? props.exam.question : data);
-  console.log(items);
+  const [items, setItems] = useState(exam ? exam.question : data);
+  console.log('item',items);
   const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
@@ -112,7 +136,7 @@ function TableComponent(props) {
               {items
                 ? items.map((item, index) => (
                     <>
-                    <TableRow itemProps={item} id={item._id} index={index} />
+                    <TableRow itemProps={item} id={item._id} index={index} HandleUpdateData={HandleUpdateData} />
                     
                       {/* <Draggable
                         key={item._id}
@@ -193,7 +217,11 @@ function TableComponent(props) {
             Delete
           </button> */}
         </Modal.Footer>
-      </Modal>
+      </Modal>  {loading ? (
+        <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>
+      ) :null}
     </>
   );
 }

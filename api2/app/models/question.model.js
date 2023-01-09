@@ -3,36 +3,67 @@ const mongoose = require("mongoose");
 const Question = mongoose.model(
   "Question",
   new mongoose.Schema({
-    hasChild:  Number,
+    hasChild:  {
+      type: Number,
+      default:0,
+    },
     parentId: mongoose.ObjectId,
     question: {
       type: Object,
       properties: {
-        text:String,
-        image:  String,
-        sound:String,
-        hint: String
+        text:{
+          type: String,
+          default:'',
+        },
+        image:  {
+          type: String,
+          default:'',
+        },
+        sound:{
+          type: String,
+          default:'',
+        },
+        hint: {
+          type: String,
+          default:'',
+        },
       }
     },
     answer: {
-      type: Object,
-      properties: {
-        texts:[{
-          type: String
+        texts:{type:[{
+          type: String,
         }],
-        choices:[{
-          type: String
+        default:['(A)']},
+        choices:{
+          type:[{
+          type: String,
+          default:'',
         }],
-        image:  String,
-        sound:String,
-        hint: String
-      }
-    },
+        default: ["(B)", "(C)"]},
+        image:  {
+          type: String,
+          default:'',
+        },
+        sound:{
+          type: String,
+          default:'',
+        },
+        hint: {
+          type: String,
+          default:'',
+        },
+      },
     tags: [{
       type: String,
     }],
-    type:  Number,
-    orderIndex:  Number
+    type:  {
+      type: String,
+      default:'t1',
+    },
+    orderIndex:  {
+      type: Number,
+      default:0,
+    },
   })
 );
 

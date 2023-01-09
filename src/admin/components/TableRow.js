@@ -12,10 +12,10 @@ import { Checkbox } from "@material-ui/core";
 import Axios from "axios";
 
 
-function TableRow({ itemProps, id, index }) {
-    // console.log("item:", item);
+function TableRow({ itemProps, id, index,HandleUpdateData }) {
     // const [item, setItem] = useState(itemProps);
     const item = structuredClone(itemProps);
+    console.log("itemProps:", item);
     const [open, setOpen] = useState(false);
     const [isChange, setIsChange] = useState(false);
     const [isChange2, setIsChange2] = useState(false);
@@ -30,13 +30,14 @@ function TableRow({ itemProps, id, index }) {
         // setItem(itemProps)
         setIsChange2(!isChange2);
         setPreviewContent(item);
-    }, [id])
+    }, [id,itemProps])
 
     const handleClose = () => {
+        console.log('aa');
+        setShowDelete(false);
         setPreviewContent(item);
         setIsChange(!isChange)
         setShow(false);
-        setShowDelete(false);
     }
     const handleShow = () => setShow(true);
     const handleShowDelete = () => setShowDelete(true);
@@ -88,8 +89,9 @@ function TableRow({ itemProps, id, index }) {
         //     return;
         // }
         const temp = previewContent;
-        // if (type == 'question') {
-        // temp.question.text = input.text ? input.text : temp.question.text;
+        if (type == 'OrderIndex') {
+            temp.newOrder = parseInt(input);
+        }
         type == "hasChild"
             ? temp.hasChild = input.hasChild ? 1 : 0
             : temp.question[type] = input
@@ -145,6 +147,9 @@ function TableRow({ itemProps, id, index }) {
             return;
         }
         const temp = previewContent;
+        if(!temp.answer.texts || !temp.answer.choices){
+            return
+        }
         if (temp.hasChild) {
             switch (type) {
                 case "question":
@@ -187,25 +192,53 @@ function TableRow({ itemProps, id, index }) {
 
     const HandleDeleteQuestion = (id) => {
         console.log("delete");
-        // setLoading(true);
-        // axios
-        //   .delete(
-        //     "http://localhost:4000/api/question/" + id,
-        //     // JSON.stringify({}),
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //     }
-        //   )
-        //   .then(function (response) {
-        //     console.log(response.data);
-        //     // fetchData();
-        //     setLoading(false);
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
+        handleClose;
+        setLoading(true);
+        Axios
+          .delete(
+            "http://localhost:4000/api/question/" + id,
+            // JSON.stringify({}),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then(function (response) {
+            console.log(response.data);
+            HandleUpdateData();
+            handleClose;
+            setLoading(false);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    };
+    const HandleUpdate = () => {
+        console.log("update");
+        setLoading(true);
+        console.log(previewContent);
+        const {_id,...temp}=previewContent
+        console.log('id',_id,'temp',temp);
+        Axios
+          .post(
+            "http://localhost:4000/api/question/" + _id,
+            JSON.stringify(temp),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then(function (response) {
+            console.log(response.data);
+            HandleUpdateData();
+            setLoading(false);
+          })
+          .catch(function (error) {
+            console.log(error);
+            setLoading(false);
+          });
     };
 
     const config =
@@ -321,6 +354,13 @@ function TableRow({ itemProps, id, index }) {
                         <Row>
                             <Col xs={5}><QuizComponent2 isChange={isChange} DataQuestion={previewContent} /></Col>
                             <Col xs={6}>
+                                <label>Vị trí :</label>
+                                <TextInput
+                                    valueProps={previewContent.newOrder}
+                                    setTextProps={(newContent) => {
+                                        setContent({ type: 'OrderIndex', input: newContent })
+                                    }}
+                                />
                                 <label>Link Audio :</label>
                                 <TextInput
                                     valueProps={previewContent.question.sound}
@@ -419,12 +459,12 @@ function TableRow({ itemProps, id, index }) {
                                         <br />
                                         <TextInput
                                             setTextProps={(newContent) => HandleAnswerChange({ type: "answer", input: { text: newContent } })}
-                                            valueProps={[...item.answer.texts, ...item.answer.choices].join(";")}
+                                            valueProps={[...item.answer?.texts, ...item.answer?.choices].join(";")}
                                         />
                                         <label>Hint:</label>
                                         <JoditEditor
                                             ref={editor}
-                                            value={previewContent.answer.hint}
+                                            value={previewContent.answer?.hint}
                                             config={config}
                                             style={{ maxHeight: 400 }}
                                             tabIndex={1} // tabIndex of textarea
@@ -449,12 +489,12 @@ function TableRow({ itemProps, id, index }) {
                                                 <label>Đáp án:</label>
                                                 <TextInput
                                                     setTextProps={(newContent) => HandleAnswerChange({ type: "answer", input: { index: index, text: newContent } })}
-                                                    valueProps={[...item.answer.texts, ...item.answer.choices].join(";")}
+                                                    valueProps={[...item.answer?.texts, ...item.answer?.choices].join(";")}
                                                 />
                                                 <label>Hint:</label>
                                                 <JoditEditor
                                                     ref={editor}
-                                                    value={item.answer.hint}
+                                                    value={item.answer?.hint}
                                                     config={config}
                                                     style={{ maxHeight: 400 }}
                                                     tabIndex={1} // tabIndex of textarea
@@ -482,6 +522,7 @@ function TableRow({ itemProps, id, index }) {
                     <button className="btn btn-danger btn-sm mx-1" onClick={handleClose}>
                         Cancel
                     </button>
+                    <Button onClick={HandleUpdate} variant="success" className="btn btn-sm mx-1 " >update</Button>
                 </Modal.Footer>
             </Modal>
             <Modal show={showDelete} onHide={handleClose}>
@@ -500,13 +541,17 @@ function TableRow({ itemProps, id, index }) {
                         variant="primary"
                         onClick={() => {
                             HandleDeleteQuestion(item._id);
-                            handleClose;
                         }}
                     >
                         Delete
                     </button>
                 </Modal.Footer>
-            </Modal>
+            </Modal>    
+            {loading ? (
+        <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>
+      ) :null}
         </Row>
     );
 }
